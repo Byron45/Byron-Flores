@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
 import com.example.app_vehiculos.model.Vehiculo
 
 @Composable
@@ -41,6 +43,14 @@ fun HomeScreen(
                         .padding(vertical = 8.dp),
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
+                    Image(
+                        painter = painterResource(id = vehiculo.imagenResId),
+                        contentDescription = "Imagen de ${vehiculo.marca}",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(180.dp)
+                    )
+
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text("Placa: ${vehiculo.placa}")
                         Text("Marca: ${vehiculo.marca}")

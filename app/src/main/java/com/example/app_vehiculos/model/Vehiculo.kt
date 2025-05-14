@@ -6,5 +6,7 @@ data class Vehiculo(
     val anio: Int,
     val color: String,
     val costoPorDia: Double,
-    val activo: Boolean
+    val activo: Boolean,
+    val imagenResId: Int
+
 )

@@ -35,9 +35,9 @@ fun App() {
 
     val vehiculos = remember {
         mutableStateListOf(
-            Vehiculo("ABC123", "Toyota", 2020, "Rojo", 50.0, true),
-            Vehiculo("XYZ789", "Chevrolet", 2019, "Azul", 45.0, false),
-            Vehiculo("DEF456", "Nissan", 2022, "Blanco", 60.0, true)
+            Vehiculo("ABC123", "Toyota", 2020, "Rojo", 50.0, true, R.drawable.toyota),
+            Vehiculo("XYZ789", "Chevrolet", 2019, "Azul", 45.0, false, R.drawable.chevrolet),
+            Vehiculo("DEF456", "Nissan", 2022, "Blanco", 60.0, true, R.drawable.nissan)
         )
     }
 
