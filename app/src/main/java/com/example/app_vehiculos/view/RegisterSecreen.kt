@@ -10,10 +10,9 @@ import androidx.compose.ui.unit.dp
 import com.example.app_vehiculos.model.Usuario
 
 @Composable
-fun LoginScreen(
-    usuariosRegistrados: List<Usuario>,
-    onLoginSuccess: () -> Unit,
-    onGoToRegister: () -> Unit,
+fun RegisterScreen(
+    usuarios: List<Usuario>,
+    onRegisterSuccess: (Usuario) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var nombre by remember { mutableStateOf(TextFieldValue("")) }
@@ -27,7 +26,7 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Login", style = MaterialTheme.typography.headlineMedium)
+        Text("Registro", style = MaterialTheme.typography.headlineMedium)
         Spacer(modifier = Modifier.height(24.dp))
 
         OutlinedTextField(
@@ -47,31 +46,29 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(onClick = {
-            val user = usuariosRegistrados.find {
-                it.nombre.equals(nombre.text.trim(), ignoreCase = true) &&
-                        it.apellido.equals(apellido.text.trim(), ignoreCase = true)
-            }
+            val nombreTxt = nombre.text.trim()
+            val apellidoTxt = apellido.text.trim()
 
-            if (user != null) {
-                errorMsg = ""
-                onLoginSuccess()
+            if (nombreTxt.isEmpty() || apellidoTxt.isEmpty()) {
+                errorMsg = "Todos los campos son obligatorios"
+            } else if (usuarios.any {
+                    it.nombre.equals(nombreTxt, ignoreCase = true) &&
+                            it.apellido.equals(apellidoTxt, ignoreCase = true)
+                }) {
+                errorMsg = "Este usuario ya está registrado"
             } else {
-                errorMsg = "Credenciales incorrectas"
+                errorMsg = ""
+                onRegisterSuccess(Usuario(nombreTxt, apellidoTxt))
             }
         }) {
-            Text("Ingresar")
+            Text("Registrarse")
         }
 
         if (errorMsg.isNotEmpty()) {
             Spacer(modifier = Modifier.height(16.dp))
             Text(errorMsg, color = MaterialTheme.colorScheme.error)
         }
-
-        TextButton(onClick = onGoToRegister) {
-            Text("¿No tienes cuenta? Regístrate")
-        }
-
     }
-
 }
+
 

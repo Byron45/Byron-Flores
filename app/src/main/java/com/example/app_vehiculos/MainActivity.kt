@@ -3,28 +3,68 @@ package com.example.app_vehiculos
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import com.example.app_vehiculos.model.Usuario
+import com.example.app_vehiculos.model.Vehiculo
 import com.example.app_vehiculos.ui.theme.App_VehiculosTheme
+import com.example.app_vehiculos.view.HomeScreen
 import com.example.app_vehiculos.view.LoginScreen
+import com.example.app_vehiculos.view.RegisterScreen
 
 class MainActivity : ComponentActivity() {
-    private val usuariosRegistrados = listOf(
-        Usuario("Byron", "Flores"),
-        Usuario("Jordi", "Pila"),
-        Usuario("Veyker", "Barrionuevo")
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             App_VehiculosTheme {
-                LoginScreen(
-                    usuariosRegistrados = usuariosRegistrados,
-                    onLoginSuccess = {
-                        // Aquí luego navegaremos a la pantalla de inicio
-                    }
-                )
+                App()
             }
         }
+    }
+}
+
+@Composable
+fun App() {
+    var currentScreen by remember { mutableStateOf("login") }
+    val usuariosRegistrados = remember { mutableStateListOf(
+        Usuario("Byron", "Flores"),
+        Usuario("Jordi", "Pila"),
+        Usuario("Veyker", "Barrionuevo")
+    )}
+
+    val vehiculos = remember {
+        mutableStateListOf(
+            Vehiculo("ABC123", "Toyota", 2020, "Rojo", 50.0, true),
+            Vehiculo("XYZ789", "Chevrolet", 2019, "Azul", 45.0, false),
+            Vehiculo("DEF456", "Nissan", 2022, "Blanco", 60.0, true)
+        )
+    }
+
+    when (currentScreen) {
+        "login" -> LoginScreen(
+            usuariosRegistrados = usuariosRegistrados,
+            onLoginSuccess = {
+                currentScreen = "home"
+            },
+            onGoToRegister = {
+                currentScreen = "register"
+            }
+        )
+
+        "register" -> RegisterScreen(
+            usuarios = usuariosRegistrados,
+            onRegisterSuccess = {
+                usuariosRegistrados.add(it)
+                currentScreen = "login"
+            }
+        )
+
+        "home" -> HomeScreen(
+            vehiculos = vehiculos, 
+            onLogout = {
+                currentScreen = "login"
+            }
+        )
     }
 }
